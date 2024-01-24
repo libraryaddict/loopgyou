@@ -34,13 +34,15 @@ jobs:
           git config user.email "<>"
           git fetch --all
           SHA=$(git rev-parse --short HEAD)
+          cp extra_files extra 
           git switch release
           rm -rf scripts/
           rm -rf ccs/
           rm -rf relay/
-          mv extra_files/* ./
+          mv extra/* ./
           mv KoLmafia/* ./
           rm -rf KoLmafia
+          rm -rf extra
           git add scripts/
           git add relay/
           git commit -m "Build Mafia files for commit $SHA"
