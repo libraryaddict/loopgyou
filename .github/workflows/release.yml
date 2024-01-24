@@ -33,12 +33,11 @@ jobs:
           git config user.email "<>"
           git fetch --all
           SHA=$(git rev-parse --short HEAD)
-          cp KoLmafia/scripts/loop-gyou/loopgyou_choice.ash KoLmafia/scripts/loop-gyou/choice.ash 
           git switch release
           rm -rf scripts/
           rm -rf ccs/
           rm -rf relay/
-          mv KoLmafia/scripts/loop-gyou/choice.ash KoLmafia/scripts/loop-gyou/loopgyou_choice.ash
+          mv extra_files/* ./
           mv KoLmafia/* ./
           rm -rf KoLmafia
           git add scripts/
