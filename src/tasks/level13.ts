@@ -1,7 +1,6 @@
 import {
   buy,
   cliExecute,
-  equippedAmount,
   haveEquipped,
   itemAmount,
   myBuffedstat,
@@ -291,10 +290,14 @@ const wand: Task[] = [
     completed: () =>
       have($item`metallic A`) || have($item`WA`) || have($item`Wand of Nagamar`) || towerSkip(),
     do: $location`The Penultimate Fantasy Airship`,
-    outfit: { equip: $items`candy cane sword cane`, modifier: "item" },
+    outfit: () => {
+      if (get("candyCaneSwordShore", false)) return { equip: $items`candy cane sword cane` };
+      else return {};
+    },
     choices: {
       793: () => {
-        if (equippedAmount($item`candy cane sword cane`) > 0) return 5;
+        if (haveEquipped($item`candy cane sword cane`) && get("candyCaneSwordShore", false))
+          return 5;
         return 1;
       },
     },

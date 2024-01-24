@@ -546,7 +546,17 @@ export const WarQuest: Quest = {
         },
       combat: new CombatStrategy().macro(Macro.trySkill($skill`Extract Jelly`)),
       do: $location`Wartime Hippy Camp (Frat Disguise)`,
-      choices: { 139: have($item`candy cane sword cane`) ? 4 : 3, 140: () => have($item`candy cane sword cane`) ? 4 : 3, 141: 3, 142: 3, 143: 3, 144: 3, 145: 1, 146: 3, 1433: 3 },
+      choices: {
+        139: have($item`candy cane sword cane`) ? 4 : 3,
+        140: () => (have($item`candy cane sword cane`) ? 4 : 3),
+        141: 3,
+        142: 3,
+        143: 3,
+        144: 3,
+        145: 1,
+        146: 3,
+        1433: 3,
+      },
       limit: { soft: 20 },
     },
     ...Flyers,
@@ -568,8 +578,8 @@ export const WarQuest: Quest = {
             !have($effect`Citizen of a Zone`) && have($familiar`Patriotic Eagle`)
               ? $familiar`Patriotic Eagle`
               : args.minor.jellies
-                ? $familiar`Space Jellyfish`
-                : undefined,
+              ? $familiar`Space Jellyfish`
+              : undefined,
         },
       do: $location`The Battlefield (Frat Uniform)`,
       post: dimesForGarters,

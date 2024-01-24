@@ -279,7 +279,6 @@ export class Engine extends BaseEngine<CombatActions, ActiveTask> {
     combat: CombatStrategy<CombatActions>,
     resources: CombatResources<CombatActions>
   ): void {
-    equipInitial(outfit);
     const wanderers = task.wanderer ? [task.wanderer] : [];
     for (const wanderer of wanderers) {
       if (!equipFirst(outfit, [wanderer]))
@@ -290,6 +289,9 @@ export class Engine extends BaseEngine<CombatActions, ActiveTask> {
       // Prepare only as requested by the task
       return;
     }
+
+    // Equip initial equipment
+    equipInitial(outfit);
 
     // Prepare combat macro
     if (combat.getDefaultAction() === undefined) combat.action("ignore");
@@ -482,7 +484,9 @@ export class Engine extends BaseEngine<CombatActions, ActiveTask> {
       }
 
       // Use an NC forcer if one is available and another task needs it.
-      const nc_blacklist = new Set<Location>($locations`The Enormous Greater-Than Sign`);
+      const nc_blacklist = new Set<Location>(
+        $locations`The Enormous Greater-Than Sign, The Copperhead Club, The Black Forest`
+      );
       const nc_task_blacklist = new Set<string>(["Summon/Spectral Jellyfish"]);
       if (
         forceNCPossible() &&
@@ -748,6 +752,7 @@ export class Engine extends BaseEngine<CombatActions, ActiveTask> {
       requireBoxServants: false,
       autoAbortThreshold: "-0.05",
       recoveryScript: "",
+      choiceAdventureScript: "loopgyou_choice.ash",
       removeMalignantEffects: false,
       mpAutoRecoveryItems: ensureRecovery(
         "mpAutoRecoveryItems",
@@ -914,10 +919,7 @@ function resetBadOrb(): boolean {
     runChoice(6);
     return true;
   } catch (e) {
-    print(
-      `We ran into an issue when gazing at a shrine for balls: ${e}.`,
-      "red"
-    );
+    print(`We ran into an issue when gazing at a shrine for balls: ${e}.`, "red");
   }
 
   return false;

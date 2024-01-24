@@ -1,8 +1,5 @@
 import {
-  buy,
   cliExecute,
-  equip,
-  equippedItem,
   getProperty,
   haveEquipped,
   inHardcore,
@@ -25,7 +22,7 @@ import {
   $location,
   $monster,
   $monsters,
-  $slots,
+  $skill,
   $stat,
   ensureEffect,
   FloristFriar,
@@ -39,7 +36,7 @@ import { CombatStrategy } from "../engine/combat";
 import { Quest, Task } from "../engine/task";
 import { step } from "grimoire-kolmafia";
 import { Priorities } from "../engine/priority";
-import { towerReady, towerSkip } from "./level13";
+import { towerSkip } from "./level13";
 import { args } from "../args";
 import { trainSetAvailable } from "./misc";
 import { haveFlorest } from "../lib";
@@ -47,6 +44,7 @@ import { haveFlorest } from "../lib";
 export enum Keys {
   Deck = "Deck",
   Malware = "Daily Dungeon Malware",
+  CandyCane = "Daily Dungeon Candy Cane",
   Dungeon = "Daily Dungeon",
   Fantasy = "Fantasy",
   Zap = "Zap",
@@ -72,113 +70,44 @@ const heroKeys: KeyTask[] = [
     freeaction: true,
   },
   {
-    which: Keys.Malware,
+    which: Keys.CandyCane,
     possible: () =>
       !get("dailyDungeonDone") &&
-      !get("_dailyDungeonMalwareUsed") &&
-      ((!inHardcore() &&
-        (pullsRemaining() > 0 || myTurncount() >= 1000 || args.major.delaytower)) ||
-        have($item`daily dungeon malware`)),
-    acquire: [
-      { item: $item`daily dungeon malware` },
-      { item: $item`Pick-O-Matic lockpicks`, optional: true },
-      { item: $item`eleven-foot pole`, optional: true },
-      { item: $item`ring of Detect Boring Doors`, optional: true },
-    ],
+      have($item`candy cane sword cane`) &&
+      get("_lastDailyDungeonRoom") < 10 &&
+      !get("candyCaneSwordDailyDungeon", false),
     ready: () =>
-      (step("questL13Final") !== -1 ||
-        (have($item`Pick-O-Matic lockpicks`) &&
-          have($item`ring of Detect Boring Doors`) &&
-          have($item`eleven-foot pole`))) &&
-      towerReady(),
-    after: [],
-    completed: () => get("dailyDungeonDone") || get("_dailyDungeonMalwareUsed"),
-    prepare: () => {
-      set("_loop_gyou_malware_amount", itemAmount($item`daily dungeon malware`));
-      if (have($item`Pick-O-Matic lockpicks`)) return;
-      if (have($item`Platinum Yendorian Express Card`)) return;
-      if (have($item`skeleton bone`) && have($item`loose teeth`) && !have($item`skeleton key`))
-        cliExecute("make skeleton key");
-    },
-    do: $location`The Daily Dungeon`,
-    post: () => {
-      if (itemAmount($item`daily dungeon malware`) < get("_loop_gyou_malware_amount", 0))
-        set("_dailyDungeonMalwareUsed", true);
-      uneffect($effect`Apathy`);
-    },
-    outfit: { equip: $items`ring of Detect Boring Doors`, modifier: "init" }, // Avoid apathy
-    combat: new CombatStrategy().macro(new Macro().item($item`daily dungeon malware`)).kill(),
-    choices: {
-      689: 1,
-      690: () => (have($item`ring of Detect Boring Doors`) ? 2 : 3),
-      691: () => 3, // Do not skip the second chest; there is a chance we skip all the monsters
-      692: () => {
-        if (have($item`Pick-O-Matic lockpicks`)) return 3;
-        if (have($item`Platinum Yendorian Express Card`)) return 7;
-        const skeletonKeys =
-          itemAmount($item`skeleton key`) +
-          min(itemAmount($item`skeleton bone`), itemAmount($item`loose teeth`));
-        if (skeletonKeys > 1) return 2;
-        if (have($item`skeleton key`) && get("nsTowerDoorKeysUsed").includes("skeleton key"))
-          return 2;
-        return 4;
-      },
-      693: () => (have($item`eleven-foot pole`) ? 2 : 1),
-    },
-    limit: { tries: 15 },
+      step("questL13Final") !== -1 ||
+      (have($item`Pick-O-Matic lockpicks`) &&
+        have($item`ring of Detect Boring Doors`) &&
+        have($item`eleven-foot pole`)),
+    completed: () => get("dailyDungeonDone"),
+    after: ["Daily Dungeon Malware"],
+    ...dailyDungeonTask(),
   },
   {
     which: Keys.Dungeon,
     possible: () => !get("dailyDungeonDone"),
-    acquire: [
-      { item: $item`Pick-O-Matic lockpicks`, optional: true },
-      { item: $item`eleven-foot pole`, optional: true },
-      { item: $item`ring of Detect Boring Doors`, optional: true },
-    ],
-    ready: () =>
-      (step("questL13Final") !== -1 ||
-        (have($item`Pick-O-Matic lockpicks`) &&
-          have($item`ring of Detect Boring Doors`) &&
-          have($item`eleven-foot pole`))) &&
-      towerReady(),
-    after: ["Daily Dungeon Malware"],
     completed: () => get("dailyDungeonDone"),
-    prepare: () => {
-      if (have($item`Pick-O-Matic lockpicks`)) return;
-      if (have($item`Platinum Yendorian Express Card`)) return;
-      if (have($item`skeleton bone`) && have($item`loose teeth`) && !have($item`skeleton key`))
-        cliExecute("make skeleton key");
-    },
-    do: $location`The Daily Dungeon`,
-    post: () => {
-      uneffect($effect`Apathy`);
-    },
-    outfit: { equip: $items`ring of Detect Boring Doors`, modifier: "init" }, // Avoid apathy
-    combat: new CombatStrategy().kill(),
-    choices: {
-      689: 1,
-      690: () => (have($item`ring of Detect Boring Doors`) ? 2 : 3),
-      691: () => (have($item`ring of Detect Boring Doors`) ? 2 : 3),
-      692: () => {
-        if (have($item`Pick-O-Matic lockpicks`)) return 3;
-        if (have($item`Platinum Yendorian Express Card`)) return 7;
-        const skeletonKeys =
-          itemAmount($item`skeleton key`) +
-          min(itemAmount($item`skeleton bone`), itemAmount($item`loose teeth`));
-        if (skeletonKeys > 1) return 2;
-        if (have($item`skeleton key`) && get("nsTowerDoorKeysUsed").includes("skeleton key"))
-          return 2;
-        return 4;
-      },
-      693: () => (have($item`eleven-foot pole`) ? 2 : 1),
-    },
-    limit: { tries: 15 },
+    after: ["Daily Dungeon Malware", "Daily Dungeon Candy Cane"],
+    ...dailyDungeonTask(),
+  },
+  {
+    which: Keys.Malware,
+    possible: () =>
+      !get("dailyDungeonDone") &&
+      !get("_dailyDungeonMalwareUsed") &&
+      ((!inHardcore() && (pullsRemaining() > 0 || myTurncount() >= 1000)) ||
+        have($item`daily dungeon malware`)) &&
+      (!have($item`Deck of Every Card`) || !have($skill`Lock Picking`)),
+    completed: () => get("dailyDungeonDone") || get("_dailyDungeonMalwareUsed"),
+    after: [],
+    ...dailyDungeonTask(),
   },
   {
     which: Keys.Fantasy,
     possible: () => get("frAlways") || get("_frToday"),
     after: ["Misc/Open Fantasy"],
-    ready: () => myBasestat($stat`moxie`) >= 120,
     completed: () => $location`The Bandit Crossroads`.turnsSpent >= 5,
     do: $location`The Bandit Crossroads`,
     outfit: {
@@ -189,22 +118,48 @@ const heroKeys: KeyTask[] = [
     combat: new CombatStrategy().kill(),
     limit: { tries: 5 },
   },
-  {
-    which: Keys.Zap,
-    possible: () => get("lastZapperWandExplosionDay") <= 0,
-    after: ["Wand/Wand"],
-    ready: () => towerReady(),
-    completed: () => get("lastZapperWandExplosionDay") >= 1 || get("_zapCount") >= 1,
-    do: () => {
-      unequipAcc(keyStrategy.getZapChoice());
-      if (!have(keyStrategy.getZapChoice()) && myTurncount() >= 1000)
-        buy(keyStrategy.getZapChoice(), 1, 100000);
-      cliExecute(`zap ${keyStrategy.getZapChoice()}`);
-    },
-    limit: { tries: 1 },
-    freeaction: true,
-  },
 ];
+
+function dailyDungeonTask(): Omit<Task, "completed" | "name" | "after"> {
+  return {
+    ready: () =>
+      step("questL13Final") !== -1 ||
+      (have($item`Pick-O-Matic lockpicks`) &&
+        have($item`ring of Detect Boring Doors`) &&
+        have($item`eleven-foot pole`)),
+    prepare: () => {
+      if (have($item`daily dungeon malware`))
+        set("_loopsmol_malware_amount", itemAmount($item`daily dungeon malware`));
+      if (have($item`Pick-O-Matic lockpicks`)) return;
+      if (have($item`Platinum Yendorian Express Card`)) return;
+      if (have($item`skeleton bone`) && have($item`loose teeth`) && !have($item`skeleton key`))
+        cliExecute("make skeleton key");
+    },
+    do: $location`The Daily Dungeon`,
+    post: () => {
+      if (itemAmount($item`daily dungeon malware`) < get("_loopsmol_malware_amount", 0))
+        set("_dailyDungeonMalwareUsed", true);
+      uneffect($effect`Apathy`);
+      cliExecute("refresh inv");
+    },
+    outfit: { equip: $items`ring of Detect Boring Doors, candy cane sword cane` },
+    combat: new CombatStrategy()
+      .macro(() => {
+        if (!get("_dailyDungeonMalwareUsed") && have($item`daily dungeon malware`))
+          return Macro.item($item`daily dungeon malware`);
+        return new Macro();
+      })
+      .kill(),
+    choices: {
+      689: 1,
+      690: () => (have($item`ring of Detect Boring Doors`) ? 2 : 3),
+      691: 3, // Do not skip the second chest; there is a chance we skip all the monsters
+      692: () => getDoorSolution(),
+      693: () => (have($item`eleven-foot pole`) ? 2 : 1),
+    },
+    limit: { tries: 15 },
+  };
+}
 
 enum KeyState {
   DONE = "Done",
@@ -472,13 +427,6 @@ function keyCount(): number {
   return count;
 }
 
-function unequipAcc(acc: Item): void {
-  if (!haveEquipped(acc)) return;
-  for (const slot of $slots`acc1, acc2, acc3`) {
-    if (equippedItem(slot) === acc) equip(slot, $item`none`);
-  }
-}
-
 function makeZapChoice(): Item {
   const options = $items`Boris's ring, Jarlsberg's earring, Sneaky Pete's breath spray`;
   for (const option of options) if (have(option)) return option;
@@ -495,4 +443,15 @@ function getScore(): number {
   const score = getProperty("8BitScore");
   if (score === "") return 0;
   return parseInt(score.replace(",", ""));
+}
+
+function getDoorSolution(): number {
+  if (have($item`Pick-O-Matic lockpicks`)) return 3;
+  if (have($item`Platinum Yendorian Express Card`)) return 7;
+  const skeletonKeys =
+    itemAmount($item`skeleton key`) +
+    min(itemAmount($item`skeleton bone`), itemAmount($item`loose teeth`));
+  if (skeletonKeys > 1) return 2;
+  if (have($item`skeleton key`) && get("nsTowerDoorKeysUsed").includes("skeleton key")) return 2;
+  return 4;
 }

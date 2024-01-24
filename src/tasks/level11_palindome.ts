@@ -1,6 +1,7 @@
 import {
   canEquip,
   create,
+  haveEquipped,
   Item,
   itemAmount,
   myBasestat,
@@ -115,7 +116,7 @@ const Copperhead: Task[] = [
   {
     name: "Cold Snake",
     after: ["Copperhead Start", "McLargeHuge/Trapper Return", "Summon/White Lion"],
-    ready: () => shenItem($item`The First Pizza`),
+    ready: () => shenItem($item`The First Pizza`) && !get("noncombatForcerActive"),
     completed: () =>
       step("questL11Shen") === 999 ||
       have($item`The First Pizza`) ||
@@ -256,9 +257,15 @@ const Zepplin: Task[] = [
       .killItem($monster`Blue Oyster cultist`)
       .killItem($monster`lynyrd skinner`)
       .kill(),
-    choices: { 856: 1, 857: 1, 858: 1, 866: 2, 1432: 1 },
+    choices: {
+      856: 1,
+      857: haveEquipped($item`candy cane sword cane`) ? 2 : 1,
+      858: 1,
+      866: 2,
+      1432: 1,
+    },
     outfit: () => {
-      const sleazeitems = $items`deck of lewd playing cards`;
+      const sleazeitems = $items`deck of lewd playing cards, candy cane sword cane`;
       if (have($item`designer sweatpants`)) sleazeitems.push($item`designer sweatpants`);
       else if (have($item`transparent pants`)) sleazeitems.push($item`transparent pants`);
 

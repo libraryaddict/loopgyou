@@ -21,6 +21,7 @@ import {
   myAscensions,
   myBasestat,
   myHp,
+  myLevel,
   myMaxhp,
   myMaxmp,
   myMeat,
@@ -31,7 +32,6 @@ import {
   print,
   retrieveItem,
   runChoice,
-  turnsPlayed,
   use,
   visitUrl,
   weightAdjustment,
@@ -109,7 +109,17 @@ export const MiscQuest: Quest = {
         have($item`skeletal skiff`) ||
         have($item`yellow submarine`),
       do: $location`The Shore, Inc. Travel Agency`,
-      choices: { 793: 1 },
+      outfit: () => {
+        if (get("candyCaneSwordShore", false)) return { equip: $items`candy cane sword cane` };
+        else return {};
+      },
+      choices: {
+        793: () => {
+          if (haveEquipped($item`candy cane sword cane`) && get("candyCaneSwordShore", false))
+            return 5;
+          return 1;
+        },
+      },
       limit: { tries: 5 },
     },
     {
@@ -962,22 +972,21 @@ export const MiscQuest: Quest = {
       name: "Leaf Resin",
       priority: () => Priorities.Free,
       ready: () =>
-        BurningLeaves.have() && BurningLeaves.numberOfLeaves() >= 50 &&
-        turnsPlayed() <= 425,
-      completed: () => have($effect`Resined`),
+        BurningLeaves.have() && BurningLeaves.numberOfLeaves() >= 50 && !have($effect`Resined`),
+      completed: () => step("questL12War") === 999, // Stop near the end of the run
       acquire: [{ item: $item`distilled resin` }],
       do: () => use($item`distilled resin`),
-      limit: { tries: 5 },
+      limit: { tries: 5, unready: true },
+      freeaction: true,
     },
     {
       name: "Wardrobe-O-Matic",
-      after: ["Tower/Naughty Sorceress"],
       priority: () => Priorities.Free,
-      ready: () => have($item`wardrobe-o-matic`),
+      ready: () => have($item`wardrobe-o-matic`) && myLevel() >= 20,
       completed: () => have($item`futuristic hat`),
       do: () => use($item`wardrobe-o-matic`),
       limit: { tries: 1 },
-    }
+    },
   ],
 };
 

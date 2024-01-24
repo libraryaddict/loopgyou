@@ -2,8 +2,8 @@ import {
   availableAmount,
   buy,
   cliExecute,
-  equippedAmount,
   familiarWeight,
+  haveEquipped,
   itemAmount,
   myMeat,
   runChoice,
@@ -51,6 +51,8 @@ const Diary: Task[] = [
       if (have($item`latte lovers member's mug`) && !get("latteUnlocks").includes("cajun")) {
         equip.push($item`latte lovers member's mug`);
       }
+      if (have($item`candy cane sword cane`) && !get("candyCaneSwordBlackForest", false))
+        equip.push($item`candy cane sword cane`);
 
       if (have($item`reassembled blackbird`)) {
         return {
@@ -138,11 +140,15 @@ const Desert: Task[] = [
     after: ["Misc/Unlock Beach"],
     ready: () => myMeat() >= 6000 || (step("questL11Black") >= 4 && myMeat() >= 500),
     completed: () => have($item`Shore Inc. Ship Trip Scrip`) || have($item`UV-resistant compass`),
-    outfit: { equip: $items`candy cane sword cane` },
+    outfit: () => {
+      if (get("candyCaneSwordShore", false)) return { equip: $items`candy cane sword cane` };
+      else return {};
+    },
     do: $location`The Shore, Inc. Travel Agency`,
     choices: {
       793: () => {
-        if (equippedAmount($item`candy cane sword cane`) > 0) return 5;
+        if (haveEquipped($item`candy cane sword cane`) && get("candyCaneSwordShore", false))
+          return 5;
         return 1;
       },
     },

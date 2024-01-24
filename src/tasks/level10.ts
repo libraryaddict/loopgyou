@@ -1,4 +1,12 @@
-import { cliExecute, containsText, equippedAmount, familiarWeight, myDaycount, use, visitUrl } from "kolmafia";
+import {
+  cliExecute,
+  containsText,
+  equippedAmount,
+  familiarWeight,
+  myDaycount,
+  use,
+  visitUrl,
+} from "kolmafia";
 import {
   $effect,
   $familiar,
@@ -40,6 +48,7 @@ export const GiantQuest: Quest = {
       do: $location`The Beanbat Chamber`,
       outfit: {
         modifier: "item",
+        equip: $items`miniature crystal ball`,
         avoid: $items`broken champagne bottle`,
       },
       combat: new CombatStrategy()
@@ -92,15 +101,18 @@ export const GiantQuest: Quest = {
       after: ["Airship YR Healer"],
       completed: () => have($item`S.O.C.K.`),
       do: $location`The Penultimate Fantasy Airship`,
-      choices: { 178: 2, 182: () => (have($item`model airship`) ? 1 : equippedAmount($item`candy cane sword cane`) > 0 ? 5 : 4) },
+      choices: {
+        178: 2,
+        182: () =>
+          have($item`model airship`) ? 1 : equippedAmount($item`candy cane sword cane`) > 0 ? 5 : 4,
+      },
       post: () => {
         if (have($effect`Temporary Amnesia`)) cliExecute("uneffect Temporary Amnesia");
       },
       outfit: () => {
         const equips = [];
-        if (!have($item`metallic A`))
-          equips.push($item`candy cane sword cane`);
-        return { equip: equips, modifier: "-combat" }
+        if (!have($item`metallic A`)) equips.push($item`candy cane sword cane`);
+        return { equip: equips, modifier: "-combat" };
       },
       limit: { soft: 50 },
       delay: () =>

@@ -1,6 +1,7 @@
 import {
   buy,
   cliExecute,
+  closetAmount,
   familiarWeight,
   itemAmount,
   myAscensions,
@@ -210,7 +211,11 @@ const Apartment: Task[] = [
       else return [$monster`pygmy shaman`];
     },
     post: makeCompleteFile,
-    outfit: { equip: $items`miniature crystal ball` },
+    outfit: () => {
+      if (have($effect`Twice-Cursed`) && $location`The Hidden Apartment Building`.turnsSpent === 8)
+        return { equip: $items`candy cane sword cane, miniature crystal ball` };
+      return { equip: $items`miniature crystal ball` };
+    },
     choices: { 780: 1 },
     limit: { soft: 9 },
   },
@@ -365,14 +370,14 @@ const Bowling: Task[] = [
   {
     name: "Bowling Skills",
     after: ["Open Bowling"],
-    ready: () => myMeat() >= 500,
+    ready: () => myMeat() >= 500 && !bowlingBallsGathered(),
     acquire: [{ item: $item`Bowl of Scorpions`, optional: true }],
     completed: () =>
       (have($skill`System Sweep`) || get("relocatePygmyJanitor") === myAscensions()) &&
       have($skill`Double Nanovision`),
     prepare: () => {
       // No need for more bowling progress after we beat the boss
-      if (get("hiddenBowlingAlleyProgress") >= 7 && have($item`bowling ball`))
+      if (!bowlingBallsGathered() && have($item`bowling ball`))
         putCloset($item`bowling ball`, itemAmount($item`bowling ball`));
 
       // Open the hidden tavern if it is available.
@@ -412,18 +417,20 @@ const Bowling: Task[] = [
       )
       .banish($monsters`pygmy janitor, pygmy orderlies`),
     outfit: () => {
+      const result: OutfitSpec = {
+        modifier: "item",
+        avoid: $items`broken champagne bottle`,
+      };
       if (have($familiar`Melodramedary`) && get("camelSpit") === 100) {
-        return {
-          modifier: "item",
-          avoid: $items`broken champagne bottle`,
-          familiar: $familiar`Melodramedary`,
-        };
-      } else {
-        return {
-          modifier: "item",
-          avoid: $items`broken champagne bottle`,
-        };
+        result.familiar = $familiar`Melodramedary`;
+      } else if (have($familiar`Grey Goose`) && familiarWeight($familiar`Grey Goose`) >= 6) {
+        result.familiar = $familiar`Grey Goose`;
       }
+
+      if (bowlingBallsGathered() && !get("candyCaneSwordBowlingAlley", false)) {
+        result.equip?.push($item`candy cane sword cane`);
+      }
+      return result;
     },
     choices: { 788: 1 },
     limit: { soft: 25 },
@@ -438,6 +445,17 @@ const Bowling: Task[] = [
     freeaction: true,
   },
 ];
+
+function bowlingBallsGathered(): boolean {
+  let balls = 0;
+  balls += itemAmount($item`bowling ball`);
+  balls += closetAmount($item`bowling ball`);
+  if (get("spookyVHSTapeMonster") === $monster`pygmy bowler`) balls += 1;
+  if (have($item`candy cane sword cane`) && !get("candyCaneSwordBowlingAlley", false)) balls += 1;
+
+  const timesBowled = get("hiddenBowlingAlleyProgress") - 1;
+  return timesBowled + balls >= 5;
+}
 
 export const HiddenQuest: Quest = {
   name: "Hidden City",
