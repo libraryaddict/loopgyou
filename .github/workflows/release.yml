@@ -34,7 +34,7 @@ jobs:
           git config user.email "<>"
           git fetch --all
           SHA=$(git rev-parse --short HEAD)
-          cp extra_files extra 
+          cp -r extra_files extra 
           git switch release
           rm -rf scripts/
           rm -rf ccs/
