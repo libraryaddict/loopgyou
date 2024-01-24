@@ -2,6 +2,9 @@
 
 This is a Grey You softcore script, using the [grimoire](https://github.com/Kasekopf/grimoire) framework.
 
+This is a fork of https://github.com/Kasekopf/loop-casual/tree/gyou
+Only minor changes by Irrat are made to this script to keep it up to date
+
 ## Warning: After the nerf on 1/30, this script will no longer work for most people. Use at your own risk!
 
 ### Strategy
@@ -15,7 +18,7 @@ Most people run this script through [goorbo](https://github.com/frazazel/goorbo)
 To install the script, use the following command in the KoLMafia CLI.
 
 ```
-git checkout https://github.com/Kasekopf/loop-casual release
+git checkout https://github.com/libraryaddict/loopgyou release
 ```
 
 ### Usage
@@ -169,4 +172,4 @@ You have everything! You are the shiniest star. This script should work great.
 If you would like to make your own modifications to the script, the recommended way is to compile and install the script manually.
 
 1. Compile the script, following instructions in the [kol-ts-starter](https://github.com/docrostov/kol-ts-starter).
-2. Copy loopgyou.js from KoLmafia/scripts/loop-gyou to your Mafia scripts directory.
+2. Copy loopgyou.js and the choice.ash from KoLmafia/scripts/loop-gyou to your Mafia scripts directory.
