@@ -39,7 +39,7 @@ jobs:
           rm -rf scripts/
           rm -rf ccs/
           rm -rf relay/
-          mv extra/* KoLmafia/ -r
+          mv extra/* KoLmafia/
           mv KoLmafia/* ./
           rm -rf KoLmafia
           git add scripts/
