@@ -373,7 +373,7 @@ const Bowling: Task[] = [
     ready: () => myMeat() >= 500 && !bowlingBallsGathered(),
     acquire: [{ item: $item`Bowl of Scorpions`, optional: true }],
     completed: () =>
-      (have($skill`System Sweep`) || get("relocatePygmyJanitor") === myAscensions()) &&
+      bowlingBallsGathered() || (have($skill`System Sweep`) || get("relocatePygmyJanitor") === myAscensions()) &&
       have($skill`Double Nanovision`),
     prepare: () => {
       // No need for more bowling progress after we beat the boss
