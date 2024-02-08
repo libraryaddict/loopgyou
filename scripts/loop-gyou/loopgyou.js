@@ -19421,7 +19421,7 @@ var Bowling = [{
     item: template_string_$item(level11_hidden_templateObject106 || (level11_hidden_templateObject106 = level11_hidden_taggedTemplateLiteral(["Bowl of Scorpions"]))),
     optional: true
   }],
-  completed: () => (lib_have(template_string_$skill(level11_hidden_templateObject107 || (level11_hidden_templateObject107 = level11_hidden_taggedTemplateLiteral(["System Sweep"])))) || property_get("relocatePygmyJanitor") === (0,external_kolmafia_namespaceObject.myAscensions)()) && lib_have(template_string_$skill(level11_hidden_templateObject108 || (level11_hidden_templateObject108 = level11_hidden_taggedTemplateLiteral(["Double Nanovision"])))),
+  completed: () => bowlingBallsGathered() || (lib_have(template_string_$skill(level11_hidden_templateObject107 || (level11_hidden_templateObject107 = level11_hidden_taggedTemplateLiteral(["System Sweep"])))) || property_get("relocatePygmyJanitor") === (0,external_kolmafia_namespaceObject.myAscensions)()) && lib_have(template_string_$skill(level11_hidden_templateObject108 || (level11_hidden_templateObject108 = level11_hidden_taggedTemplateLiteral(["Double Nanovision"])))),
   prepare: () => {
     // No need for more bowling progress after we beat the boss
     if (!bowlingBallsGathered() && lib_have(template_string_$item(level11_hidden_templateObject109 || (level11_hidden_templateObject109 = level11_hidden_taggedTemplateLiteral(["bowling ball"]))))) (0,external_kolmafia_namespaceObject.putCloset)(template_string_$item(level11_hidden_templateObject110 || (level11_hidden_templateObject110 = level11_hidden_taggedTemplateLiteral(["bowling ball"]))), (0,external_kolmafia_namespaceObject.itemAmount)(template_string_$item(level11_hidden_templateObject111 || (level11_hidden_templateObject111 = level11_hidden_taggedTemplateLiteral(["bowling ball"]))))); // Open the hidden tavern if it is available.
@@ -21395,7 +21395,7 @@ function checkRequirements() {
   }
 }
 ;// CONCATENATED MODULE: ./src/_git_commit.ts
-var lastCommitHash = "6d65a52";
+var lastCommitHash = "3d26f6e";
 ;// CONCATENATED MODULE: ./src/main.ts
 var main_templateObject, main_templateObject2, main_templateObject3;
 
