@@ -147,7 +147,7 @@ const Desert: Task[] = [
     do: $location`The Shore, Inc. Travel Agency`,
     choices: {
       793: () => {
-        if (haveEquipped($item`candy cane sword cane`) && get("candyCaneSwordShore", false))
+        if (haveEquipped($item`candy cane sword cane`) && !get("candyCaneSwordShore"))
           return 5;
         return 1;
       },

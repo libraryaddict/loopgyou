@@ -144,6 +144,7 @@ const Lighthouse: Task[] = [
       })
       .kill($monster`lobsterfrogman`),
     orbtargets: () => undefined,
+    expectbeatenup: () => get("lastEncounter") === "Zerg Rush",
     choices: { 1387: 2 },
     limit: {
       tries: 20,

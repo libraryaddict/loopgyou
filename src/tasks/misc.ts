@@ -110,12 +110,12 @@ export const MiscQuest: Quest = {
         have($item`yellow submarine`),
       do: $location`The Shore, Inc. Travel Agency`,
       outfit: () => {
-        if (get("candyCaneSwordShore", false)) return { equip: $items`candy cane sword cane` };
+        if (get("candyCaneSwordShore")) return { equip: $items`candy cane sword cane` };
         else return {};
       },
       choices: {
         793: () => {
-          if (haveEquipped($item`candy cane sword cane`) && get("candyCaneSwordShore", false))
+          if (haveEquipped($item`candy cane sword cane`) && !get("candyCaneSwordShore"))
             return 5;
           return 1;
         },
