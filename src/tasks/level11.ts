@@ -141,13 +141,13 @@ const Desert: Task[] = [
     ready: () => myMeat() >= 6000 || (step("questL11Black") >= 4 && myMeat() >= 500),
     completed: () => have($item`Shore Inc. Ship Trip Scrip`) || have($item`UV-resistant compass`),
     outfit: () => {
-      if (get("candyCaneSwordShore", false)) return { equip: $items`candy cane sword cane` };
+      if (!get("candyCaneSwordShore", false)) return { equip: $items`candy cane sword cane` };
       else return {};
     },
     do: $location`The Shore, Inc. Travel Agency`,
     choices: {
       793: () => {
-        if (haveEquipped($item`candy cane sword cane`) && !get("candyCaneSwordShore"))
+        if (haveEquipped($item`candy cane sword cane`) && !get("candyCaneSwordShore", false))
           return 5;
         return 1;
       },
