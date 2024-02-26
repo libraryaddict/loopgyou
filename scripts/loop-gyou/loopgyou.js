@@ -20532,14 +20532,14 @@ var Desert = [{
   ready: () => (0,external_kolmafia_namespaceObject.myMeat)() >= 6000 || step("questL11Black") >= 4 && (0,external_kolmafia_namespaceObject.myMeat)() >= 500,
   completed: () => lib_have(template_string_$item(level11_templateObject31 || (level11_templateObject31 = level11_taggedTemplateLiteral(["Shore Inc. Ship Trip Scrip"])))) || lib_have(template_string_$item(level11_templateObject32 || (level11_templateObject32 = level11_taggedTemplateLiteral(["UV-resistant compass"])))),
   outfit: () => {
-    if (property_get("candyCaneSwordShore", false)) return {
+    if (!property_get("candyCaneSwordShore", false)) return {
       equip: template_string_$items(level11_templateObject33 || (level11_templateObject33 = level11_taggedTemplateLiteral(["candy cane sword cane"])))
     };else return {};
   },
   do: template_string_$location(level11_templateObject34 || (level11_templateObject34 = level11_taggedTemplateLiteral(["The Shore, Inc. Travel Agency"]))),
   choices: {
     793: () => {
-      if ((0,external_kolmafia_namespaceObject.haveEquipped)(template_string_$item(level11_templateObject35 || (level11_templateObject35 = level11_taggedTemplateLiteral(["candy cane sword cane"])))) && !property_get("candyCaneSwordShore")) return 5;
+      if ((0,external_kolmafia_namespaceObject.haveEquipped)(template_string_$item(level11_templateObject35 || (level11_templateObject35 = level11_taggedTemplateLiteral(["candy cane sword cane"])))) && !property_get("candyCaneSwordShore", false)) return 5;
       return 1;
     }
   },
@@ -21399,7 +21399,7 @@ function checkRequirements() {
   }
 }
 ;// CONCATENATED MODULE: ./src/_git_commit.ts
-var lastCommitHash = "dc21f76";
+var lastCommitHash = "4ed0894";
 ;// CONCATENATED MODULE: ./src/main.ts
 var main_templateObject, main_templateObject2, main_templateObject3;
 
