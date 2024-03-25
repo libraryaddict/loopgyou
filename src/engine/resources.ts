@@ -48,6 +48,7 @@ import { atLevel } from "../lib";
 import { Task } from "./task";
 import { monstersAt } from "../tasks/absorb";
 import { args } from "../args";
+import { MyActionDefaults } from "./combat";
 
 export interface Resource {
   name: string;
@@ -59,8 +60,20 @@ export interface Resource {
 
 export type CombatResource = Resource & BaseCombatResource;
 
-export interface BanishSource extends CombatResource {
-  do: Item | Skill;
+export type BanishSource = CombatResource &
+  (
+    | {
+        do: Item | Skill;
+      }
+    | {
+        do: Macro;
+        tracker: Item | Skill;
+      }
+  );
+
+function getTracker(source: BanishSource): Item | Skill {
+  if ("tracker" in source) return source.tracker;
+  return source.do;
 }
 
 const banishSources: BanishSource[] = [
@@ -87,6 +100,13 @@ const banishSources: BanishSource[] = [
     },
     prepare: () => asdonFillTo(50),
     do: $skill`Asdon Martin: Spring-Loaded Front Bumper`,
+  },
+  {
+    name: "Spring Shoes Kick Away",
+    available: () => have($item`spring shoes`) && !have($effect`Everything Looks Green`),
+    equip: $item`spring shoes`,
+    do: Macro.skill($skill`Spring Kick`).skill($skill`Spring Away`),
+    tracker: $skill`Spring Kick`,
   },
   {
     name: "System Sweep",
@@ -126,6 +146,13 @@ const banishSources: BanishSource[] = [
     available: () => have($item`cursed monkey's paw`) && get("_monkeyPawWishesUsed", 0) === 0,
     equip: $item`cursed monkey's paw`,
     do: $skill`Monkey Slap`,
+  },
+  {
+    name: "Spring Shoes Kick",
+    available: () => have($item`spring shoes`),
+    equip: $item`spring shoes`,
+    do: Macro.skill($skill`Spring Kick`).step(new MyActionDefaults().killHard()),
+    tracker: $skill`Spring Kick`,
   },
 ];
 
@@ -183,7 +210,9 @@ export class BanishState {
       }
     }
 
-    return banishSources.filter((banish) => banish.available() && !used_banishes.has(banish.do));
+    return banishSources.filter(
+      (banish) => banish.available() && !used_banishes.has(getTracker(banish))
+    );
   }
 }
 
@@ -438,7 +467,7 @@ export const freekillSources: FreekillSource[] = [
  * Actually fuel the asdon to the required amount.
  */
 export function asdonFillTo(amount: number): boolean {
-  if (getWorkshed() !== $item`Asdon Martin keyfob`) return false;
+  if (getWorkshed() !== $item`Asdon Martin keyfob (on ring)`) return false;
 
   const remaining = amount - getFuel();
   const count = Math.ceil(remaining / 5) + 1; // 5 is minimum adv gain from loaf of soda bread, +1 buffer

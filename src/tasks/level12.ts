@@ -220,6 +220,7 @@ const Junkyard: Task[] = [
       .banish($monster`A.M.C. gremlin`)
       .kill($monster`batwinged gremlin (tool)`)
       .ignoreSoftBanish($monsters`batwinged gremlin, vegetable gremlin`),
+    nofightingfamiliars: true,
     limit: { soft: 15 },
   },
   {
@@ -247,6 +248,7 @@ const Junkyard: Task[] = [
       .banish($monster`A.M.C. gremlin`)
       .kill($monster`erudite gremlin (tool)`)
       .ignoreSoftBanish($monsters`erudite gremlin, spider gremlin`),
+    nofightingfamiliars: true,
     limit: { soft: 15 },
   },
   {
@@ -272,6 +274,7 @@ const Junkyard: Task[] = [
       .banish($monster`A.M.C. gremlin`)
       .kill($monster`spider gremlin (tool)`)
       .ignoreSoftBanish($monsters`batwinged gremlin, spider gremlin`),
+    nofightingfamiliars: true,
     limit: { soft: 15 },
   },
   {
@@ -299,6 +302,7 @@ const Junkyard: Task[] = [
       .banish($monster`A.M.C. gremlin`)
       .kill($monster`vegetable gremlin (tool)`)
       .ignoreSoftBanish($monsters`erudite gremlin, vegetable gremlin`),
+    nofightingfamiliars: true,
     limit: { soft: 15 },
   },
   {
@@ -462,7 +466,7 @@ const Nuns: Task[] = [
     freecombat: true, // Do not equip cmg or carn plant
     combat: new CombatStrategy()
       .macro(new Macro().trySkill($skill`Bowl Straight Up`).trySkill($skill`Sing Along`))
-      .kill(),
+      .killHard(),
     limit: { soft: 30 },
     boss: true,
   },
@@ -579,8 +583,8 @@ export const WarQuest: Quest = {
             !have($effect`Citizen of a Zone`) && have($familiar`Patriotic Eagle`)
               ? $familiar`Patriotic Eagle`
               : args.minor.jellies
-                ? $familiar`Space Jellyfish`
-                : undefined,
+              ? $familiar`Space Jellyfish`
+              : undefined,
         },
       do: $location`The Battlefield (Frat Uniform)`,
       post: dimesForGarters,

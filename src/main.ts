@@ -30,7 +30,7 @@ const time_property = "_loop_gyou_first_start";
 const svn_name = "Kasekopf-loop-casual-branches-release";
 
 export function main(command?: string): void {
-  sinceKolmafiaRevision(27488);
+  sinceKolmafiaRevision(27832);
 
   Args.fill(args, command);
   if (args.debug.settings) {
@@ -68,7 +68,7 @@ export function main(command?: string): void {
   }
 
   // Adapt depreciated args
-  if (args.minor.asdon) args.major.swapworkshed = $item`Asdon Martin keyfob`;
+  if (args.minor.asdon) args.major.swapworkshed = $item`Asdon Martin keyfob (on ring)`;
 
   const set_time_now = get(time_property, -1) === -1;
   if (set_time_now) set(time_property, gametimeToInt());

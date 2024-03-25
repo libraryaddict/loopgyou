@@ -100,7 +100,11 @@ export function equipInitial(outfit: Outfit): void {
   }
 }
 
-export function equipCharging(outfit: Outfit, force_charge_goose: boolean): void {
+export function equipCharging(
+  outfit: Outfit,
+  force_charge_goose: boolean,
+  noFightingFamiliars: boolean
+): void {
   if (outfit.skipDefaults) return;
 
   const modifier = getModifiersFrom(outfit);
@@ -167,7 +171,11 @@ export function equipCharging(outfit: Outfit, force_charge_goose: boolean): void
   }
 }
 
-export function equipDefaults(outfit: Outfit, force_charge_goose: boolean): void {
+export function equipDefaults(
+  outfit: Outfit,
+  force_charge_goose: boolean,
+  noFightingFamiliars: boolean
+): void {
   if (have($familiar`Temporal Riftlet`)) {
     outfit.equip($familiar`Temporal Riftlet`);
   }
@@ -186,10 +194,19 @@ export function equipDefaults(outfit: Outfit, force_charge_goose: boolean): void
   if (outfit.familiar === $familiar`Melodramedary` && get("camelSpit") < 100)
     outfit.equip($item`dromedary drinking helmet`);
 
+  const modifier = getModifiersFrom(outfit);
+
+  if (modifier.includes("meat") || modifier.includes("item")) {
+    if (outfit.equip($familiar`Jill-of-All-Trades`)) {
+      outfit.equip($item`LED candle`);
+    }
+  }
+
   if (outfit.skipDefaults) return;
 
-  const modifier = getModifiersFrom(outfit);
   if (modifier.includes("-combat")) outfit.equip($familiar`Disgeist`); // low priority
+  if (!noFightingFamiliars) outfit.equip($familiar`Jill-of-All-Trades`);
+  outfit.equip($familiar`Blood-Faced Volleyball`); // default
   if (!modifier.includes("meat") || !have($item`backup camera`)) {
     // Leave room for backup camera for nuns
     outfit.equip($item`mafia thumb ring`);

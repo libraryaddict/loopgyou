@@ -115,8 +115,7 @@ export const MiscQuest: Quest = {
       },
       choices: {
         793: () => {
-          if (haveEquipped($item`candy cane sword cane`) && !get("candyCaneSwordShore"))
-            return 5;
+          if (haveEquipped($item`candy cane sword cane`) && !get("candyCaneSwordShore")) return 5;
           return 1;
         },
       },
@@ -741,7 +740,7 @@ export const MiscQuest: Quest = {
       priority: () => Priorities.Free,
       ready: () => myMeat() >= 140,
       completed: () =>
-        (!have($item`Asdon Martin keyfob`) && !AsdonMartin.installed()) ||
+        (!have($item`Asdon Martin keyfob (on ring)`) && !AsdonMartin.installed()) ||
         !knollAvailable() ||
         (have($item`bugbear beanie`) && have($item`bugbear bungguard`)) ||
         myAscensions() >= 10,

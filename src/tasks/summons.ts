@@ -243,7 +243,8 @@ const summonSources: SummonSource[] = [
         if (checkFax(mon)) break;
       }
       if (!checkFax(mon))
-        throw `Failed to acquire photocopied ${mon.name}.${!isOnline(faxbot) ? `Faxbot ${faxbot} appears to be offline.` : ""
+        throw `Failed to acquire photocopied ${mon.name}.${
+          !isOnline(faxbot) ? `Faxbot ${faxbot} appears to be offline.` : ""
         }`;
       use($item`photocopied monster`);
     },

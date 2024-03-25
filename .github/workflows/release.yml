@@ -2,7 +2,7 @@ name: Release loopgyou
 
 on:
   push:
-    branches: [ gyou ]
+    branches: [gyou]
 
 jobs:
   build:

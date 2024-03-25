@@ -519,7 +519,7 @@ export class Engine extends BaseEngine<CombatActions, ActiveTask> {
     ) {
       force_charge_goose = true;
     }
-    equipCharging(outfit, force_charge_goose);
+    equipCharging(outfit, force_charge_goose, task.nofightingfamiliars ?? false);
 
     if (wanderers.length === 0 && this.hasDelay(task) && !get("_loopgyou_ncforce", false))
       wanderers.push(...equipUntilCapped(outfit, wandererSources));
@@ -558,7 +558,7 @@ export class Engine extends BaseEngine<CombatActions, ActiveTask> {
       outfit.equip($item`miniature crystal ball`);
     }
 
-    equipDefaults(outfit, force_charge_goose);
+    equipDefaults(outfit, force_charge_goose, task.nofightingfamiliars ?? false);
 
     // Kill wanderers
     for (const wanderer of wanderers) {
@@ -594,7 +594,16 @@ export class Engine extends BaseEngine<CombatActions, ActiveTask> {
 
   dress(task: ActiveTask, outfit: Outfit): void {
     applyEffects(outfit.modifier.join(","));
-    cacheDress(outfit);
+    try {
+      cacheDress(outfit);
+    } catch {
+      // If we fail to dress, this is maybe just a mafia desync.
+      // So refresh our inventory and try again (once).
+      debug("Possible mafia desync detected; refreshing...");
+      cliExecute("refresh all");
+      // Do not try and cache-dress
+      outfit.dress();
+    }
     fixFoldables(outfit);
 
     const equipped = [...new Set(Slot.all().map((slot) => equippedItem(slot)))];

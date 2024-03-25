@@ -165,6 +165,7 @@ const Apartment: Task[] = [
     limit: { tries: 4 },
     freecombat: true,
     acquire: [{ item: $item`antique machete` }],
+    combat: new CombatStrategy().killHard(),
   },
   {
     name: "Apartment Files", // Get the last McClusky files here if needed, as a backup plan
@@ -244,6 +245,7 @@ const Office: Task[] = [
     limit: { tries: 4 },
     freecombat: true,
     acquire: [{ item: $item`antique machete` }],
+    combat: new CombatStrategy().killHard(),
   },
   {
     name: "Office Files",
@@ -315,6 +317,7 @@ const Hospital: Task[] = [
     limit: { tries: 4 },
     freecombat: true,
     acquire: [{ item: $item`antique machete` }],
+    combat: new CombatStrategy().killHard(),
   },
   {
     name: "Hospital",
@@ -367,6 +370,7 @@ const Bowling: Task[] = [
     limit: { tries: 4 },
     freecombat: true,
     acquire: [{ item: $item`antique machete` }],
+    combat: new CombatStrategy().killHard(),
   },
   {
     name: "Bowling Skills",
@@ -374,8 +378,9 @@ const Bowling: Task[] = [
     ready: () => myMeat() >= 500 && !bowlingBallsGathered(),
     acquire: [{ item: $item`Bowl of Scorpions`, optional: true }],
     completed: () =>
-      bowlingBallsGathered() || (have($skill`System Sweep`) || get("relocatePygmyJanitor") === myAscensions()) &&
-      have($skill`Double Nanovision`),
+      bowlingBallsGathered() ||
+      ((have($skill`System Sweep`) || get("relocatePygmyJanitor") === myAscensions()) &&
+        have($skill`Double Nanovision`)),
     prepare: () => {
       // No need for more bowling progress after we beat the boss
       if (!bowlingBallsGathered() && have($item`bowling ball`))
@@ -494,7 +499,7 @@ export const HiddenQuest: Quest = {
       },
       choices: { 791: 1 },
       combat: new CombatStrategy()
-        .kill($monster`dense liana`)
+        .killHard($monster`dense liana`)
         .killHard($monster`Protector Spectre`)
         .autoattack(new Macro().trySkill($skill`Infinite Loop`), $monster`dense liana`),
       limit: { tries: 4 },
