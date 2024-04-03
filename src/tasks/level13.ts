@@ -34,6 +34,7 @@ import { atLevel } from "../lib";
 import { args } from "../args";
 import { Quest, Task } from "../engine/task";
 import { step } from "grimoire-kolmafia";
+import { grabLucky, luckyAvailable } from "../engine/resources";
 
 const Challenges: Task[] = [
   {
@@ -275,7 +276,7 @@ const wand: Task[] = [
   {
     name: "Wand W",
     after: ["Wall of Bones"],
-    ready: () => !have($item`11-leaf clover`),
+    ready: () => !luckyAvailable(),
     completed: () =>
       have($item`ruby W`) || have($item`WA`) || have($item`Wand of Nagamar`) || towerSkip(),
     do: $location`Pandamonium Slums`,
@@ -286,7 +287,7 @@ const wand: Task[] = [
   {
     name: "Wand A",
     after: ["Wall of Bones"],
-    ready: () => !have($item`11-leaf clover`),
+    ready: () => !luckyAvailable(),
     completed: () =>
       have($item`metallic A`) || have($item`WA`) || have($item`Wand of Nagamar`) || towerSkip(),
     do: $location`The Penultimate Fantasy Airship`,
@@ -307,7 +308,7 @@ const wand: Task[] = [
   {
     name: "Wand N",
     after: ["Wall of Bones"],
-    ready: () => !have($item`11-leaf clover`),
+    ready: () => !luckyAvailable(),
     completed: () =>
       have($item`lowercase N`) || have($item`ND`) || have($item`Wand of Nagamar`) || towerSkip(),
     do: $location`The Valley of Rof L'm Fao`,
@@ -318,7 +319,7 @@ const wand: Task[] = [
   {
     name: "Wand D",
     after: ["Wall of Bones"],
-    ready: () => !have($item`11-leaf clover`),
+    ready: () => !luckyAvailable(),
     completed: () =>
       have($item`heavy D`) || have($item`ND`) || have($item`Wand of Nagamar`) || towerSkip(),
     do: $location`The Castle in the Clouds in the Sky (Basement)`,
@@ -329,13 +330,13 @@ const wand: Task[] = [
   {
     name: "Wand Parts",
     after: ["Wall of Bones"],
-    ready: () => have($item`11-leaf clover`),
+    ready: () => luckyAvailable() > 0,
     completed: () =>
       have($item`Wand of Nagamar`) ||
       ((have($item`WA`) || (have($item`ruby W`) && have($item`metallic A`))) &&
         (have($item`ND`) || (have($item`lowercase N`) && have($item`heavy D`)))) ||
       towerSkip(),
-    prepare: () => use($item`11-leaf clover`),
+    prepare: () => grabLucky(),
     do: $location`The Castle in the Clouds in the Sky (Basement)`,
     limit: { tries: 1 },
   },

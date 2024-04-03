@@ -21,6 +21,7 @@ import { fillHp } from "./level13";
 import { summonStrategy } from "./summons";
 import { coldPlanner } from "../engine/outfit";
 import { trainSetAvailable } from "./misc";
+import { grabLucky, luckyAvailable } from "../engine/resources";
 
 export const McLargeHugeQuest: Quest = {
   name: "McLargeHuge",
@@ -47,9 +48,9 @@ export const McLargeHugeQuest: Quest = {
     {
       name: "Clover Ore",
       after: ["Trapper Request", "Pull/Ore", "Misc/Hermit Clover"],
-      ready: () => have($item`11-leaf clover`),
+      ready: () => luckyAvailable() > 0,
       prepare: () => {
-        if (!have($effect`Lucky!`)) use($item`11-leaf clover`);
+        grabLucky();
       },
       completed: () =>
         itemAmount($item`asbestos ore`) >= 3 ||

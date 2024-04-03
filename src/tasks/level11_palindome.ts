@@ -36,6 +36,7 @@ import { fillHp } from "./level13";
 import { args } from "../args";
 import { globalStateCache } from "../engine/state";
 import { tuneSnapper } from "../lib";
+import { grabLucky, luckyAvailable } from "../engine/resources";
 
 function shenItem(item: Item) {
   return (
@@ -241,13 +242,12 @@ const Zepplin: Task[] = [
     after: ["Protesters Start", "Misc/Hermit Clover", "McLargeHuge/Clover Ore"],
     ready: () =>
       canEquip($item`transparent pants`) &&
-      (itemAmount($item`11-leaf clover`) > cloversToSave() ||
+      (luckyAvailable() > cloversToSave() ||
         have($item`Flamin' Whatshisname`) ||
         step("questL11Shen") === 999),
     prepare: () => {
       if (have($item`lynyrd musk`)) ensureEffect($effect`Musky`);
-      if (itemAmount($item`11-leaf clover`) > cloversToSave() && !have($effect`Lucky!`))
-        use($item`11-leaf clover`);
+      if (luckyAvailable() > cloversToSave() && !have($effect`Lucky!`)) grabLucky();
     },
     completed: () => get("zeppelinProtestors") >= 80,
     do: $location`A Mob of Zeppelin Protesters`,
@@ -269,7 +269,7 @@ const Zepplin: Task[] = [
       if (have($item`designer sweatpants`)) sleazeitems.push($item`designer sweatpants`);
       else if (have($item`transparent pants`)) sleazeitems.push($item`transparent pants`);
 
-      if (itemAmount($item`11-leaf clover`) > cloversToSave() || have($effect`Lucky!`))
+      if (luckyAvailable() > cloversToSave() || have($effect`Lucky!`))
         return {
           modifier: "sleaze dmg, sleaze spell dmg",
           equip: sleazeitems,
@@ -279,7 +279,7 @@ const Zepplin: Task[] = [
         equip: sleazeitems,
       };
     },
-    freeaction: () => itemAmount($item`11-leaf clover`) > cloversToSave() || have($effect`Lucky!`),
+    freeaction: () => luckyAvailable() > cloversToSave() || have($effect`Lucky!`),
     limit: { soft: 30 },
   },
   {

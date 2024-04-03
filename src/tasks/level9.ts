@@ -113,7 +113,7 @@ const Oil: Task[] = [
     do: $location`Oil Peak`,
     outfit: () => {
       const spec: OutfitSpec & { equip: Item[] } = {
-        modifier: "ML 100 max, 0.1 item",
+        modifier: "ML 100 max, 0.1 item, 0.1 DA, 0.1 DR",
         equip: [],
         avoid: $items`Kramco Sausage-o-Matic™`,
       };

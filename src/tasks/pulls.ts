@@ -157,7 +157,11 @@ export const pulls: PullSpec[] = [
     pull: $item`Mohawk wig`,
     useful: () => (have($item`S.O.C.K.`) ? !have($item`Mohawk wig`) : undefined), // if one didn't drop naturally
   },
-  { pull: $item`11-leaf clover`, duplicate: true, useful: () => get("zeppelinProtestors") < 80 },
+  {
+    pull: $item`11-leaf clover`,
+    duplicate: true,
+    useful: () => !have($item`Apriling band helmet`) && get("zeppelinProtestors") < 80,
+  },
   {
     pull: $item`wet stew`,
     useful: () =>

@@ -985,6 +985,37 @@ export const MiscQuest: Quest = {
       completed: () => have($item`futuristic hat`),
       do: () => use($item`wardrobe-o-matic`),
       limit: { tries: 1 },
+      freeaction: true,
+    },
+    {
+      name: "Apriling Intrinsic",
+      priority: () => Priorities.Free,
+      ready: () => have($item`Apriling band helmet`),
+      completed: () => have($effect`Apriling Band Celebration Bop`),
+      do: () => {
+        visitUrl(`inventory.php?pwd&action=apriling`);
+        // Grab saxaphone
+        visitUrl(`choice.php?pwd&whichchoice=1526&option=3`);
+        // Exit NC
+        visitUrl(`main.php`);
+      },
+      limit: { tries: 1 },
+      freeaction: true,
+    },
+    {
+      name: "Apriling Saxophone",
+      priority: () => Priorities.Free,
+      ready: () => have($item`Apriling band helmet`),
+      completed: () => have($item`Apriling band saxophone`),
+      do: () => {
+        visitUrl(`inventory.php?pwd&action=apriling`);
+        // Grab Apriling Band Celebration Bop
+        visitUrl(`choice.php?pwd&whichchoice=1526&option=4`);
+        // Exit NC
+        visitUrl(`main.php`);
+      },
+      limit: { tries: 1 },
+      freeaction: true,
     },
   ],
 };

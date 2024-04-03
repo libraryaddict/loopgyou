@@ -30,6 +30,7 @@ import { OutfitSpec, step } from "grimoire-kolmafia";
 import { Priorities } from "../engine/priority";
 import { CombatStrategy } from "../engine/combat";
 import { globalStateCache } from "../engine/state";
+import { grabLucky, luckyAvailable } from "../engine/resources";
 
 function manualChoice(whichchoice: number, option: number) {
   return visitUrl(`choice.php?whichchoice=${whichchoice}&pwd=${myHash()}&option=${option}`);
@@ -96,12 +97,7 @@ const Temple: Task[] = [
       return Priorities.BadGoose;
     },
     prepare: () => {
-      if (
-        itemAmount($item`11-leaf clover`) > 1 &&
-        !have($effect`Lucky!`) &&
-        !have($item`industrial fire extinguisher`)
-      )
-        use($item`11-leaf clover`);
+      if (luckyAvailable() > 1 && !have($item`industrial fire extinguisher`)) grabLucky();
     },
     do: $location`The Hidden Temple`,
     outfit: () => {

@@ -5,6 +5,7 @@ import {
   familiarWeight,
   getFuel,
   getWorkshed,
+  haveEffect,
   haveEquipped,
   Item,
   itemAmount,
@@ -12,9 +13,11 @@ import {
   Monster,
   myAscensions,
   myFamiliar,
+  myHash,
   myMeat,
   myTurncount,
   retrieveItem,
+  setProperty,
   Skill,
   toInt,
   totalTurnsPlayed,
@@ -63,12 +66,12 @@ export type CombatResource = Resource & BaseCombatResource;
 export type BanishSource = CombatResource &
   (
     | {
-        do: Item | Skill;
-      }
+      do: Item | Skill;
+    }
     | {
-        do: Macro;
-        tracker: Item | Skill;
-      }
+      do: Macro;
+      tracker: Item | Skill;
+    }
   );
 
 function getTracker(source: BanishSource): Item | Skill {
@@ -586,6 +589,36 @@ export const forceItemSources: ForceItemSource[] = [
 
 export function forceItemPossible(): boolean {
   return yellowRayPossible() || forceItemSources.find((s) => s.available()) !== undefined;
+}
+
+// Inhouse pref for now
+const aprilingLuckyProperty = "_aprilingLucky";
+
+export function grabLucky(): boolean {
+  if (have($effect`Lucky!`)) return true;
+
+  // If have the iotm & pref isn't 3
+  if (have($item`Apriling band saxophone`) && get(aprilingLuckyProperty, 0) < 3) {
+    visitUrl(`inventory.php?pwd=${myHash()}&iid=11566&action=aprilplay&ajax=1`);
+    setProperty(aprilingLuckyProperty, (get(aprilingLuckyProperty, 0) + 1).toString());
+
+    return true;
+  }
+
+  if (have($item`11-leaf clover`)) {
+    use($item`11-leaf clover`);
+    return true;
+  }
+
+  return false;
+}
+
+export function luckyAvailable(): number {
+  let count = itemAmount($item`11-leaf clover`);
+  if (have($effect`Lucky!`)) count++;
+  if (have($item`Apriling band saxophone`)) count += 3 - get(aprilingLuckyProperty, 0);
+
+  return count;
 }
 
 export type ForceNCSorce = CombatResource & { do: Macro };
