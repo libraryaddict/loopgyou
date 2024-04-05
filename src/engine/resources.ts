@@ -591,16 +591,13 @@ export function forceItemPossible(): boolean {
   return yellowRayPossible() || forceItemSources.find((s) => s.available()) !== undefined;
 }
 
-// Inhouse pref for now
-const aprilingLuckyProperty = "_aprilingLucky";
-
 export function grabLucky(): boolean {
   if (have($effect`Lucky!`)) return true;
 
   // If have the iotm & pref isn't 3
-  if (have($item`Apriling band saxophone`) && get(aprilingLuckyProperty, 0) < 3) {
+  if (have($item`Apriling band saxophone`) && get(`_aprilBandSaxophoneUses`, 0) < 3) {
     visitUrl(`inventory.php?pwd=${myHash()}&iid=11566&action=aprilplay&ajax=1`, false);
-    setProperty(aprilingLuckyProperty, (get(aprilingLuckyProperty, 0) + 1).toString());
+    setProperty(`_aprilBandSaxophoneUses`, (get(`_aprilBandSaxophoneUses`, 0) + 1).toString());
 
     return true;
   }
@@ -616,7 +613,7 @@ export function grabLucky(): boolean {
 export function luckyAvailable(): number {
   let count = itemAmount($item`11-leaf clover`);
   if (have($effect`Lucky!`)) count++;
-  if (have($item`Apriling band saxophone`)) count += 3 - get(aprilingLuckyProperty, 0);
+  if (have($item`Apriling band saxophone`)) count += 3 - get(`_aprilBandSaxophoneUses`, 0);
 
   return count;
 }
