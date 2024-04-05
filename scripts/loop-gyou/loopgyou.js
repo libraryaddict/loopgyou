@@ -13827,7 +13827,6 @@ function grabLucky() {
 
   if (lib_have(template_string_$item(resources_templateObject147 || (resources_templateObject147 = resources_taggedTemplateLiteral(["Apriling band saxophone"])))) && property_get("_aprilBandSaxophoneUses", 0) < 3) {
     (0,external_kolmafia_namespaceObject.visitUrl)("inventory.php?pwd=".concat((0,external_kolmafia_namespaceObject.myHash)(), "&iid=11566&action=aprilplay&ajax=1"), false);
-    (0,external_kolmafia_namespaceObject.setProperty)("_aprilBandSaxophoneUses", (property_get("_aprilBandSaxophoneUses", 0) + 1).toString());
     return true;
   }
 
@@ -21577,7 +21576,7 @@ function checkRequirements() {
   }
 }
 ;// CONCATENATED MODULE: ./src/_git_commit.ts
-var lastCommitHash = "961521b";
+var lastCommitHash = "b928d76";
 ;// CONCATENATED MODULE: ./src/main.ts
 var main_templateObject, main_templateObject2, main_templateObject3;
 
