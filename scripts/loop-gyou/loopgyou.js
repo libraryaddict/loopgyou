@@ -13821,15 +13821,13 @@ var forceItemSources = [{
 }];
 function forceItemPossible() {
   return yellowRayPossible() || forceItemSources.find(s => s.available()) !== undefined;
-} // Inhouse pref for now
-
-var aprilingLuckyProperty = "_aprilingLucky";
+}
 function grabLucky() {
   if (lib_have(template_string_$effect(resources_templateObject146 || (resources_templateObject146 = resources_taggedTemplateLiteral(["Lucky!"]))))) return true; // If have the iotm & pref isn't 3
 
-  if (lib_have(template_string_$item(resources_templateObject147 || (resources_templateObject147 = resources_taggedTemplateLiteral(["Apriling band saxophone"])))) && property_get(aprilingLuckyProperty, 0) < 3) {
+  if (lib_have(template_string_$item(resources_templateObject147 || (resources_templateObject147 = resources_taggedTemplateLiteral(["Apriling band saxophone"])))) && property_get("_aprilBandSaxophoneUses", 0) < 3) {
     (0,external_kolmafia_namespaceObject.visitUrl)("inventory.php?pwd=".concat((0,external_kolmafia_namespaceObject.myHash)(), "&iid=11566&action=aprilplay&ajax=1"), false);
-    (0,external_kolmafia_namespaceObject.setProperty)(aprilingLuckyProperty, (property_get(aprilingLuckyProperty, 0) + 1).toString());
+    (0,external_kolmafia_namespaceObject.setProperty)("_aprilBandSaxophoneUses", (property_get("_aprilBandSaxophoneUses", 0) + 1).toString());
     return true;
   }
 
@@ -13843,7 +13841,7 @@ function grabLucky() {
 function luckyAvailable() {
   var count = (0,external_kolmafia_namespaceObject.itemAmount)(template_string_$item(resources_templateObject150 || (resources_templateObject150 = resources_taggedTemplateLiteral(["11-leaf clover"]))));
   if (lib_have(template_string_$effect(resources_templateObject151 || (resources_templateObject151 = resources_taggedTemplateLiteral(["Lucky!"]))))) count++;
-  if (lib_have(template_string_$item(resources_templateObject152 || (resources_templateObject152 = resources_taggedTemplateLiteral(["Apriling band saxophone"]))))) count += 3 - property_get(aprilingLuckyProperty, 0);
+  if (lib_have(template_string_$item(resources_templateObject152 || (resources_templateObject152 = resources_taggedTemplateLiteral(["Apriling band saxophone"]))))) count += 3 - property_get("_aprilBandSaxophoneUses", 0);
   return count;
 }
 var forceNCSources = [{
@@ -21579,7 +21577,7 @@ function checkRequirements() {
   }
 }
 ;// CONCATENATED MODULE: ./src/_git_commit.ts
-var lastCommitHash = "6a38aee";
+var lastCommitHash = "961521b";
 ;// CONCATENATED MODULE: ./src/main.ts
 var main_templateObject, main_templateObject2, main_templateObject3;
 
