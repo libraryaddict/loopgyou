@@ -599,7 +599,7 @@ export function grabLucky(): boolean {
 
   // If have the iotm & pref isn't 3
   if (have($item`Apriling band saxophone`) && get(aprilingLuckyProperty, 0) < 3) {
-    visitUrl(`inventory.php?pwd=${myHash()}&iid=11566&action=aprilplay&ajax=1`);
+    visitUrl(`inventory.php?pwd=${myHash()}&iid=11566&action=aprilplay&ajax=1`, false);
     setProperty(aprilingLuckyProperty, (get(aprilingLuckyProperty, 0) + 1).toString());
 
     return true;
