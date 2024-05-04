@@ -49,6 +49,7 @@ class OrbState {
     this.predictions = new Map(
       get("crystalBallPredictions")
         .split("|")
+        .filter((s) => s.includes(":"))
         .map((element) => element.split(":") as [string, string, string])
         .map(
           ([, location, monster]) =>

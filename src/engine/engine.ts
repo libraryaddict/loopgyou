@@ -855,7 +855,7 @@ function absorbConsumables(): void {
   if (myTurncount() >= 1000) return; // stop after breaking ronin
 
   let absorbed_list = get("_loop_gyou_absorbed_consumables", "");
-  const absorbed = new Set<string>(absorbed_list.split(","));
+  const absorbed = new Set<string>(absorbed_list.split(",").filter((s) => s.length > 0));
 
   for (const item_name in getInventory()) {
     const item = Item.get(item_name);
@@ -948,7 +948,9 @@ export function customRestoreMp(target: number) {
 }
 
 function ensureRecovery(property: string, items: string[], avoid: string[]): string {
-  const recovery_property = get(property).split(";");
+  const recovery_property = get(property)
+    .split(";")
+    .filter((s) => s.length > 0);
   for (const item of items) {
     if (!recovery_property.includes(item)) {
       recovery_property.push(item);

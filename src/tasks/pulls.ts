@@ -306,7 +306,9 @@ class PullStrategy {
   }
 
   public pullsUsed(): number {
-    return get("_roninStoragePulls").split(",").length;
+    return get("_roninStoragePulls")
+      .split(",")
+      .filter((s) => s.length > 0).length;
   }
 }
 

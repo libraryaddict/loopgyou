@@ -66,12 +66,12 @@ export type CombatResource = Resource & BaseCombatResource;
 export type BanishSource = CombatResource &
   (
     | {
-      do: Item | Skill;
-    }
+        do: Item | Skill;
+      }
     | {
-      do: Macro;
-      tracker: Item | Skill;
-    }
+        do: Macro;
+        tracker: Item | Skill;
+      }
   );
 
 function getTracker(source: BanishSource): Item | Skill {
