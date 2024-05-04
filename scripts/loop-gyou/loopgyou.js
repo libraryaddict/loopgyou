@@ -9470,7 +9470,7 @@ var OrbState = /*#__PURE__*/function () {
       (0,external_kolmafia_namespaceObject.print)("Verbose: Tracking misalignment on orb.");
     }
 
-    this.predictions = new Map(property_get("crystalBallPredictions").split("|").map(element => element.split(":")).map(_ref => {
+    this.predictions = new Map(property_get("crystalBallPredictions").split("|").filter(s => s.includes(":")).map(element => element.split(":")).map(_ref => {
       var _ref2 = state_slicedToArray(_ref, 3),
           location = _ref2[1],
           monster = _ref2[2];
@@ -15890,7 +15890,7 @@ var PullStrategy = /*#__PURE__*/function () {
   }, {
     key: "pullsUsed",
     value: function pullsUsed() {
-      return property_get("_roninStoragePulls").split(",").length;
+      return property_get("_roninStoragePulls").split(",").filter(s => s.length > 0).length;
     }
   }]);
 
@@ -16819,7 +16819,7 @@ function absorbConsumables() {
   if ((0,external_kolmafia_namespaceObject.myTurncount)() >= 1000) return; // stop after breaking ronin
 
   var absorbed_list = property_get("_loop_gyou_absorbed_consumables", "");
-  var absorbed = new Set(absorbed_list.split(","));
+  var absorbed = new Set(absorbed_list.split(",").filter(s => s.length > 0));
 
   for (var item_name in (0,external_kolmafia_namespaceObject.getInventory)()) {
     var item = external_kolmafia_namespaceObject.Item.get(item_name);
@@ -16908,7 +16908,7 @@ function customRestoreMp(target) {
 }
 
 function ensureRecovery(property, items, avoid) {
-  var recovery_property = property_get(property).split(";");
+  var recovery_property = property_get(property).split(";").filter(s => s.length > 0);
 
   var _iterator15 = engine_engine_createForOfIteratorHelper(items),
       _step15;
@@ -21576,7 +21576,7 @@ function checkRequirements() {
   }
 }
 ;// CONCATENATED MODULE: ./src/_git_commit.ts
-var lastCommitHash = "b928d76";
+var lastCommitHash = "88c43b8";
 ;// CONCATENATED MODULE: ./src/main.ts
 var main_templateObject, main_templateObject2, main_templateObject3;
 
