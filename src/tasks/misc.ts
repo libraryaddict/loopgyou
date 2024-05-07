@@ -586,7 +586,7 @@ export const MiscQuest: Quest = {
       ready: () =>
         have($skill`System Sweep`) &&
         have($skill`Double Nanovision`) &&
-        (get("currentNunneryMeat") === 0 || get("currentNunneryMeat") === 100000),
+        (get("sidequestNunsCompleted") !== "none" || get("hippiesDefeated") < 192),
       completed: () =>
         !have($item`SongBoom™ BoomBox`) ||
         get("boomBoxSong") === "Food Vibrations" ||
