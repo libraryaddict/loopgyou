@@ -38,6 +38,7 @@ import {
 } from "kolmafia";
 import {
   $effect,
+  $effects,
   $familiar,
   $item,
   $items,
@@ -991,10 +992,13 @@ export const MiscQuest: Quest = {
       name: "Apriling Intrinsic",
       priority: () => Priorities.Free,
       ready: () => have($item`Apriling band helmet`),
-      completed: () => have($effect`Apriling Band Celebration Bop`),
+      completed: () =>
+        $effects`Apriling Band Celebration Bop, Apriling Band Battle Cadence, Apriling Band Celebration Bop`.some(
+          have
+        ),
       do: () => {
         visitUrl(`inventory.php?pwd&action=apriling`);
-        // Grab saxaphone
+        // Grab Apriling Band Celebration Bop
         visitUrl(`choice.php?pwd&whichchoice=1526&option=3`);
         // Exit NC
         visitUrl(`main.php`);
@@ -1009,7 +1013,7 @@ export const MiscQuest: Quest = {
       completed: () => have($item`Apriling band saxophone`),
       do: () => {
         visitUrl(`inventory.php?pwd&action=apriling`);
-        // Grab Apriling Band Celebration Bop
+        // Grab saxaphone
         visitUrl(`choice.php?pwd&whichchoice=1526&option=4`);
         // Exit NC
         visitUrl(`main.php`);
