@@ -157,9 +157,9 @@ export class Prioritization {
 
     // Handle potential NC forcers in a zone
     if (undelay(task.ncforce)) {
-      if (get("_loopgyou_ncforce", false)) {
+      if (get("noncombatForcerActive", false) || forceNCPossible("non-fight")) {
         result.priorities.add(Priorities.GoodForceNC);
-      } else if (forceNCPossible()) {
+      } else if (forceNCPossible("fight")) {
         result.priorities.add(Priorities.BadForcingNC);
       }
     }

@@ -5,7 +5,7 @@
     "ecmaVersion": 2020,
     "sourceType": "module"
   },
-  "plugins": ["@typescript-eslint", "libram"],
+  "plugins": ["@typescript-eslint", "libram", "unused-imports"],
   "rules": {
     "block-scoped-var": "error",
     "eol-last": "error",
@@ -23,6 +23,7 @@
       }
     ],
     "no-unused-vars": "off",
-    "@typescript-eslint/no-unused-vars": "warn"
+    "@typescript-eslint/no-unused-vars": "warn",
+    "unused-imports/no-unused-imports": "error"
   }
 }

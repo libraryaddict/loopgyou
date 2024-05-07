@@ -1,3 +1,4 @@
+import { step } from "grimoire-kolmafia";
 import {
   cliExecute,
   containsText,
@@ -20,13 +21,12 @@ import {
   Macro,
 } from "libram";
 import { CombatStrategy } from "../engine/combat";
-import { atLevel } from "../lib";
-import { Quest } from "../engine/task";
-import { step } from "grimoire-kolmafia";
 import { Priorities } from "../engine/priority";
-import { councilSafe } from "./level12";
 import { forceItemPossible } from "../engine/resources";
 import { globalStateCache } from "../engine/state";
+import { Quest } from "../engine/task";
+import { atLevel } from "../lib";
+import { councilSafe } from "./level12";
 
 export const GiantQuest: Quest = {
   name: "Giant",

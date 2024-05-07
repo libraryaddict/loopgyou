@@ -3,7 +3,6 @@ import {
   create,
   haveEquipped,
   Item,
-  itemAmount,
   myBasestat,
   myDaycount,
   myHash,

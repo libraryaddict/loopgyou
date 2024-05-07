@@ -5,7 +5,6 @@ import {
   familiarWeight,
   getFuel,
   getWorkshed,
-  haveEffect,
   haveEquipped,
   Item,
   itemAmount,
@@ -17,11 +16,11 @@ import {
   myMeat,
   myTurncount,
   retrieveItem,
-  setProperty,
   Skill,
   toInt,
   totalTurnsPlayed,
   use,
+  useSkill,
   visitUrl,
 } from "kolmafia";
 import {
@@ -31,7 +30,9 @@ import {
   $items,
   $monster,
   $skill,
+  AprilingBandHelmet,
   AsdonMartin,
+  CinchoDeMayo,
   Counter,
   get,
   getBanishedMonsters,
@@ -617,8 +618,9 @@ export function luckyAvailable(): number {
   return count;
 }
 
-export type ForceNCSorce = CombatResource & { do: Macro };
-export const forceNCSources: ForceNCSorce[] = [
+export type ForceNCSorce = Resource & { do?: Macro };
+
+const forceNCSources: ForceNCSorce[] = [
   {
     name: "Parka",
     available: () =>
@@ -630,6 +632,46 @@ export const forceNCSources: ForceNCSorce[] = [
   },
 ];
 
-export function forceNCPossible(): boolean {
-  return forceNCSources.find((s) => s.available()) !== undefined;
+const tuba = $item`Apriling band tuba`;
+
+const noncombatForceNCSources: ForceNCSorce[] = [
+  {
+    name: "Cincho",
+    available: () => CinchoDeMayo.currentCinch() >= 60,
+    prepare: () => useSkill($skill`Cincho: Fiesta Exit`),
+  },
+  {
+    name: "Apriling Tuba",
+    available: () => (AprilingBandHelmet.canJoinSection() || have(tuba)) && tuba.dailyusesleft > 0,
+    prepare: () => AprilingBandHelmet.play(tuba, true),
+  },
+];
+
+export function getForceNCs(forcedVia: "non-fight" | "fight"): ForceNCSorce[] {
+  if (get("noncombatForcerActive")) return [];
+
+  return forcedVia === "fight" ? forceNCSources : noncombatForceNCSources;
+}
+
+export function forceNCPossible(forcedVia: "non-fight" | "fight"): boolean {
+  return get("noncombatForcerActive") || getForceNCs(forcedVia).some((r) => r.available());
+}
+
+export function tryPlayApriling(modifier: string): void {
+  if (!AprilingBandHelmet.have()) return;
+
+  // Most likely useless, but I don't ever want to figure out there's a problem
+  modifier = modifier.toLowerCase();
+
+  if (modifier.includes("+combat")) {
+    AprilingBandHelmet.conduct("Apriling Band Battle Cadence");
+  }
+
+  if (modifier.includes("-combat")) {
+    AprilingBandHelmet.conduct("Apriling Band Patrol Beat");
+  }
+
+  if (modifier.includes("food") || modifier.includes("booze")) {
+    AprilingBandHelmet.conduct("Apriling Band Celebration Bop");
+  }
 }

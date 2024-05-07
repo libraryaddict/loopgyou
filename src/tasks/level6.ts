@@ -6,6 +6,7 @@ import { Priorities } from "../engine/priority";
 import { councilSafe } from "./level12";
 import { Quest } from "../engine/task";
 import { step } from "grimoire-kolmafia";
+import { forceNCPossible } from "../engine/resources";
 
 export const FriarQuest: Quest = {
   name: "Friar",
@@ -25,7 +26,7 @@ export const FriarQuest: Quest = {
       after: ["Start"],
       priority: () => {
         if (
-          get("_loopgyou_ncforce", false) &&
+          forceNCPossible("non-fight") &&
           have($item`latte lovers member's mug`) &&
           !get("latteUnlocks").includes("wing")
         )
@@ -58,7 +59,7 @@ export const FriarQuest: Quest = {
       after: ["Start"],
       priority: () => {
         if (
-          get("_loopgyou_ncforce", false) &&
+          forceNCPossible("non-fight") &&
           have($item`latte lovers member's mug`) &&
           !get("latteUnlocks").includes("vitamins")
         )

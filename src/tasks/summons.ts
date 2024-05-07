@@ -227,7 +227,7 @@ const summonSources: SummonSource[] = [
     available: () =>
       CombatLoversLocket.have() ? CombatLoversLocket.reminiscesLeft() - args.minor.savelocket : 0,
     canFight: (mon: Monster) => CombatLoversLocket.availableLocketMonsters().includes(mon),
-    summon: (mon: Monster) => CombatLoversLocket.reminisce(mon),
+    summon: (mon: Monster) => CombatLoversLocket.reminisce(mon, ""),
   },
   {
     name: "Fax",

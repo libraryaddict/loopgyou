@@ -31,7 +31,7 @@ import {
   getKramcoWandererChance,
   have,
 } from "libram";
-import { Resource } from "./resources";
+import { Resource, tryPlayApriling } from "./resources";
 import { Keys, keyStrategy } from "../tasks/keys";
 import { towerSkip } from "../tasks/level13";
 import { Modes, Outfit, OutfitSpec, step } from "grimoire-kolmafia";
@@ -240,6 +240,7 @@ export function equipDefaults(
     outfit.equip($item`square sponge pants`);
     outfit.equip($item`Cargo Cultist Shorts`);
     outfit.equip($item`lucky gold ring`);
+    outfit.equip($item`Everfull Dart Holster`);
 
     if (
       yellowSubmarinePossible() &&
@@ -361,6 +362,8 @@ export function fixFoldables(outfit: Outfit) {
       if (get("parkaMode").toLowerCase() !== "kachungasaur") cliExecute("parka kachungasaur");
     }
   }
+
+  tryPlayApriling(modifier);
 }
 
 const weaponHands = (i?: Item) => (i ? mafiaWeaponHands(i) : 0);

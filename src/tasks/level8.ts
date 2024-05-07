@@ -1,4 +1,4 @@
-import { Item, itemAmount, numericModifier, use, visitUrl } from "kolmafia";
+import { Item, itemAmount, numericModifier, visitUrl } from "kolmafia";
 import {
   $effect,
   $familiar,
