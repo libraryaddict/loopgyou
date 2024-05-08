@@ -112,6 +112,18 @@ export const args = Args.create(
         help: "Attempt to use the voter booth if we have access.",
         default: true,
       }),
+      tuba: Args.flag({
+        help: "Should loopgyou acquire & use the apriling tuba to force NCs",
+        default: true,
+      }),
+      saxophone: Args.flag({
+        help: "Should loopgyou acquire & use the apriling saxophone to get lucky",
+        default: true,
+      }),
+      cinch: Args.flag({
+        help: "Should loopgyou acquire & use the Cincho De Mayo to force NCs",
+        default: true,
+      }),
     }),
     debug: Args.group("Debug Options", {
       actions: Args.number({

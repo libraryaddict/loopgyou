@@ -596,7 +596,11 @@ export function grabLucky(): boolean {
   if (have($effect`Lucky!`)) return true;
 
   // If have the iotm & pref isn't 3
-  if (have($item`Apriling band saxophone`) && get(`_aprilBandSaxophoneUses`, 0) < 3) {
+  if (
+    args.minor.saxophone &&
+    have($item`Apriling band saxophone`) &&
+    get(`_aprilBandSaxophoneUses`, 0) < 3
+  ) {
     visitUrl(`inventory.php?pwd=${myHash()}&iid=11566&action=aprilplay&ajax=1`, false);
 
     return true;
@@ -613,20 +617,22 @@ export function grabLucky(): boolean {
 export function luckyAvailable(): number {
   let count = itemAmount($item`11-leaf clover`);
   if (have($effect`Lucky!`)) count++;
-  if (have($item`Apriling band saxophone`)) count += 3 - get(`_aprilBandSaxophoneUses`, 0);
+  if (args.minor.saxophone && have($item`Apriling band saxophone`))
+    count += 3 - get(`_aprilBandSaxophoneUses`, 0);
 
   return count;
 }
 
 export type ForceNCSorce = Resource & { do?: Macro };
+const parkaForcerAvailable = () =>
+  have($skill`Torso Awareness`) &&
+  have($item`Jurassic Parka`) &&
+  get("_spikolodonSpikeUses") + args.minor.saveparka < 5;
 
 const forceNCSources: ForceNCSorce[] = [
   {
     name: "Parka",
-    available: () =>
-      have($skill`Torso Awareness`) &&
-      have($item`Jurassic Parka`) &&
-      get("_spikolodonSpikeUses") + args.minor.saveparka < 5,
+    available: parkaForcerAvailable,
     equip: { equip: $items`Jurassic Parka`, modes: { parka: "spikolodon" } },
     do: Macro.skill($skill`Launch spikolodon spikes`),
   },
@@ -637,12 +643,17 @@ const tuba = $item`Apriling band tuba`;
 const noncombatForceNCSources: ForceNCSorce[] = [
   {
     name: "Cincho",
-    available: () => CinchoDeMayo.currentCinch() >= 60,
+    available: () =>
+      !parkaForcerAvailable() && args.minor.cinch && CinchoDeMayo.currentCinch() >= 60,
     prepare: () => useSkill($skill`Cincho: Fiesta Exit`),
   },
   {
     name: "Apriling Tuba",
-    available: () => (AprilingBandHelmet.canJoinSection() || have(tuba)) && tuba.dailyusesleft > 0,
+    available: () =>
+      !parkaForcerAvailable() &&
+      args.minor.tuba &&
+      (AprilingBandHelmet.canJoinSection() || have(tuba)) &&
+      tuba.dailyusesleft > 0,
     prepare: () => AprilingBandHelmet.play(tuba, true),
   },
 ];

@@ -1010,7 +1010,7 @@ export const MiscQuest: Quest = {
       name: "Apriling Saxophone",
       priority: () => Priorities.Free,
       ready: () => have($item`Apriling band helmet`),
-      completed: () => have($item`Apriling band saxophone`),
+      completed: () => !args.minor.saxophone || have($item`Apriling band saxophone`),
       do: () => {
         visitUrl(`inventory.php?pwd&action=apriling`);
         // Grab saxaphone
