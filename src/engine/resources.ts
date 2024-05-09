@@ -15,6 +15,7 @@ import {
   myHash,
   myMeat,
   myTurncount,
+  numericModifier,
   retrieveItem,
   Skill,
   toInt,
@@ -67,12 +68,12 @@ export type CombatResource = Resource & BaseCombatResource;
 export type BanishSource = CombatResource &
   (
     | {
-        do: Item | Skill;
-      }
+      do: Item | Skill;
+    }
     | {
-        do: Macro;
-        tracker: Item | Skill;
-      }
+      do: Macro;
+      tracker: Item | Skill;
+    }
   );
 
 function getTracker(source: BanishSource): Item | Skill {
@@ -674,15 +675,11 @@ export function tryPlayApriling(modifier: string): void {
   // Most likely useless, but I don't ever want to figure out there's a problem
   modifier = modifier.toLowerCase();
 
-  if (modifier.includes("+combat")) {
-    AprilingBandHelmet.conduct("Apriling Band Battle Cadence");
-  }
-
-  if (modifier.includes("-combat")) {
-    AprilingBandHelmet.conduct("Apriling Band Patrol Beat");
-  }
-
   if (modifier.includes("food") || modifier.includes("booze")) {
     AprilingBandHelmet.conduct("Apriling Band Celebration Bop");
+  } else if (modifier.includes("+combat") && numericModifier("Combat Rate") < 25) {
+    AprilingBandHelmet.conduct("Apriling Band Battle Cadence");
+  } else if (modifier.includes("-combat") && numericModifier("Combat Rate") > -25) {
+    AprilingBandHelmet.conduct("Apriling Band Patrol Beat");
   }
 }
