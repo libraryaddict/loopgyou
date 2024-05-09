@@ -993,7 +993,7 @@ export const MiscQuest: Quest = {
       priority: () => Priorities.Free,
       ready: () => have($item`Apriling band helmet`),
       completed: () =>
-        $effects`Apriling Band Celebration Bop, Apriling Band Battle Cadence, Apriling Band Celebration Bop`.some(
+        $effects`Apriling Band Patrol Beat, Apriling Band Battle Cadence, Apriling Band Celebration Bop`.some(
           have
         ),
       do: () => {
