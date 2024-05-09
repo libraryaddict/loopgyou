@@ -15286,16 +15286,12 @@ function tryPlayApriling(modifier) {
 
   modifier = modifier.toLowerCase();
 
-  if (modifier.includes("+combat")) {
-    conduct("Apriling Band Battle Cadence");
-  }
-
-  if (modifier.includes("-combat")) {
-    conduct("Apriling Band Patrol Beat");
-  }
-
   if (modifier.includes("food") || modifier.includes("booze")) {
     conduct("Apriling Band Celebration Bop");
+  } else if (modifier.includes("+combat") && (0,external_kolmafia_namespaceObject.numericModifier)("Combat Rate") < 25) {
+    conduct("Apriling Band Battle Cadence");
+  } else if (modifier.includes("-combat") && (0,external_kolmafia_namespaceObject.numericModifier)("Combat Rate") > -25) {
+    conduct("Apriling Band Patrol Beat");
   }
 }
 ;// CONCATENATED MODULE: ./src/engine/outfit.ts
@@ -21924,7 +21920,7 @@ function checkRequirements() {
   }
 }
 ;// CONCATENATED MODULE: ./src/_git_commit.ts
-var lastCommitHash = "38170f7";
+var lastCommitHash = "8075150";
 ;// CONCATENATED MODULE: ./src/main.ts
 var main_templateObject, main_templateObject2, main_templateObject3;
 
