@@ -12892,7 +12892,7 @@ var MiscQuest = {
     name: "Apriling Intrinsic",
     priority: () => Priorities.Free,
     ready: () => lib_have(template_string_$item(_templateObject203 || (_templateObject203 = misc_taggedTemplateLiteral(["Apriling band helmet"])))),
-    completed: () => $effects(_templateObject204 || (_templateObject204 = misc_taggedTemplateLiteral(["Apriling Band Celebration Bop, Apriling Band Battle Cadence, Apriling Band Celebration Bop"]))).some(lib_have),
+    completed: () => $effects(_templateObject204 || (_templateObject204 = misc_taggedTemplateLiteral(["Apriling Band Patrol Beat, Apriling Band Battle Cadence, Apriling Band Celebration Bop"]))).some(lib_have),
     do: () => {
       (0,external_kolmafia_namespaceObject.visitUrl)("inventory.php?pwd&action=apriling"); // Grab Apriling Band Celebration Bop
 
@@ -21920,7 +21920,7 @@ function checkRequirements() {
   }
 }
 ;// CONCATENATED MODULE: ./src/_git_commit.ts
-var lastCommitHash = "8075150";
+var lastCommitHash = "110d5ff";
 ;// CONCATENATED MODULE: ./src/main.ts
 var main_templateObject, main_templateObject2, main_templateObject3;
 
